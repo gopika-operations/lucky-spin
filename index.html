@@ -1,96 +1,697 @@
 <!doctype html>
-<html>
+<html lang="vi">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>Vòng quay may mắn</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gopika | Vòng quay may mắn</title>
+
   <style>
-    body{font-family:Arial;max-width:520px;margin:24px auto;padding:0 14px}
-    .card{border:1px solid #ddd;border-radius:12px;padding:14px;margin:10px 0}
-    input{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;margin:6px 0}
-    button{padding:10px 14px;border:none;border-radius:10px;background:#111;color:#fff;font-weight:700;cursor:pointer}
-    button:disabled{background:#888;cursor:not-allowed}
-    pre{background:#f6f6f6;padding:10px;border-radius:10px;white-space:pre-wrap}
+    :root{
+      /* Gopika-ish palette (bạn có thể chỉnh nhẹ nếu có brand guideline) */
+      --gpk-green: #14B87A;
+      --gpk-green-2:#0EA5A4;
+      --gpk-orange:#FF8A00;
+      --gpk-ink:#0B1F1A;
+      --card: rgba(255,255,255,.86);
+      --line: rgba(15,23,42,.10);
+    }
+
+    *{ box-sizing:border-box }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--gpk-ink);
+      background:
+        radial-gradient(900px 500px at 15% 20%, rgba(20,184,122,.22), transparent 60%),
+        radial-gradient(900px 500px at 85% 35%, rgba(255,138,0,.18), transparent 60%),
+        radial-gradient(700px 500px at 50% 85%, rgba(14,165,164,.18), transparent 55%),
+        linear-gradient(180deg, #f7fffb 0%, #f2fbff 55%, #ffffff 100%);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 16px 40px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      user-select:none;
+    }
+    .brand img{
+      height:34px;
+      width:auto;
+      display:block;
+    }
+    .brand .txt{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brand .txt b{
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .brand .txt span{
+      font-size:12px;
+      opacity:.7;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.65);
+      border-radius:999px;
+      font-size:12px;
+      backdrop-filter: blur(8px);
+    }
+    .dot{
+      width:9px;height:9px;border-radius:50%;
+      background: var(--gpk-green);
+      box-shadow: 0 0 0 6px rgba(20,184,122,.16);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      align-items:start;
+    }
+
+    @media (max-width: 860px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(2,6,23,.06);
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h1{
+      margin: 2px 0 6px;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .hero p{
+      margin: 0;
+      opacity:.75;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .form{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 520px){
+      .form{ grid-template-columns: 1fr; }
+    }
+    label{
+      font-size:12px;
+      opacity:.8;
+      display:block;
+      margin: 0 0 6px;
+    }
+    input{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(2,6,23,.12);
+      background: rgba(255,255,255,.86);
+      outline:none;
+      font-size: 14px;
+    }
+    input:focus{
+      border-color: rgba(20,184,122,.55);
+      box-shadow: 0 0 0 4px rgba(20,184,122,.14);
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .btn{
+      border:none;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor:pointer;
+      font-size: 14px;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .btn-primary{
+      background: linear-gradient(135deg, var(--gpk-orange), #ff6a00);
+      color:white;
+      box-shadow: 0 10px 22px rgba(255,138,0,.25);
+    }
+    .btn-ghost{
+      background: rgba(255,255,255,.75);
+      border: 1px solid var(--line);
+      color: var(--gpk-ink);
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .status{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px dashed rgba(2,6,23,.15);
+      background: rgba(255,255,255,.55);
+      font-size: 13px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+    .status b{ font-weight: 900; }
+
+    /* Wheel area */
+    .wheelWrap{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+
+    .wheelStage{
+      position: relative;
+      width: min(460px, 92vw);
+      aspect-ratio: 1 / 1;
+      display:grid;
+      place-items:center;
+      margin-top: 6px;
+    }
+
+    .wheelOuter{
+      position:absolute; inset:0;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,.35) 55%, rgba(255,255,255,0) 70%),
+        radial-gradient(circle at 70% 60%, rgba(20,184,122,.18), transparent 55%),
+        radial-gradient(circle at 45% 80%, rgba(255,138,0,.18), transparent 55%);
+      filter: blur(.2px);
+    }
+
+    .wheel{
+      width: 86%;
+      height: 86%;
+      border-radius: 999px;
+      position: relative;
+      display:grid;
+      place-items:center;
+      transform: rotate(0deg);
+      transition: transform 5.6s cubic-bezier(.1,.8,.15,1);
+      will-change: transform;
+    }
+
+    canvas{
+      width:100%;
+      height:100%;
+      border-radius: 999px;
+      display:block;
+      box-shadow: 0 18px 50px rgba(2,6,23,.14);
+      background: rgba(255,255,255,.92);
+    }
+
+    .pointer{
+      position:absolute;
+      top: 2%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0; height: 0;
+      border-left: 16px solid transparent;
+      border-right: 16px solid transparent;
+      border-bottom: 28px solid var(--gpk-orange);
+      filter: drop-shadow(0 8px 12px rgba(255,138,0,.22));
+      z-index: 3;
+    }
+
+    .hub{
+      position:absolute;
+      width: 28%;
+      height: 28%;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #ffffff, rgba(255,255,255,.88) 45%, rgba(255,255,255,.75) 70%);
+      border: 8px solid rgba(20,184,122,.28);
+      box-shadow: 0 16px 30px rgba(2,6,23,.12);
+      display:grid;
+      place-items:center;
+      z-index: 2;
+    }
+    .hub button{
+      width: 78%;
+      height: 56%;
+      border-radius: 999px;
+      border:none;
+      cursor:pointer;
+      font-weight: 950;
+      letter-spacing:.2px;
+      background: linear-gradient(135deg, var(--gpk-green), var(--gpk-green-2));
+      color: white;
+      box-shadow: 0 12px 22px rgba(20,184,122,.24);
+    }
+    .hub button:disabled{
+      opacity:.6;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    .note{
+      width: 100%;
+      text-align:center;
+      font-size: 12px;
+      opacity:.75;
+    }
+
+    /* result pill */
+    .result{
+      width:100%;
+      display:flex;
+      justify-content:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.75);
+      box-shadow: 0 10px 30px rgba(2,6,23,.06);
+      font-size: 13px;
+    }
+    .pill .tag{
+      background: rgba(20,184,122,.14);
+      color: var(--gpk-ink);
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-weight: 900;
+    }
+
+    .tiny{
+      font-size:12px;
+      opacity:.65;
+    }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h2 style="margin:0 0 6px">Vòng quay may mắn</h2>
-    <div style="color:#666">Nhập <b>driver_id</b> và <b>token</b> để kiểm tra lượt và quay.</div>
-  </div>
 
-  <div class="card">
-    <input id="driver" placeholder="driver_id (vd: 84335405559)">
-    <input id="token" placeholder="token (vd: 2003)">
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button id="btnCheck">Kiểm tra lượt</button>
-      <button id="btnSpin" disabled>Quay</button>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="assets/logo.png" alt="Gopika" onerror="this.style.display='none'"/>
+        <div class="txt">
+          <b>Gopika</b>
+          <span>Lucky Spin</span>
+        </div>
+      </div>
+
+      <div class="badge">
+        <span class="dot"></span>
+        <span id="envText">Hệ thống sẵn sàng</span>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left: info + form -->
+      <div class="card hero">
+        <h1>Vòng quay may mắn</h1>
+        <p>
+          Nhập <b>driver_id</b> và <b>token</b> để kiểm tra lượt quay.
+          Mỗi <b id="daysText">N</b> ngày hoạt động = <b>1</b> lượt quay.
+        </p>
+
+        <div class="form">
+          <div>
+            <label>driver_id</label>
+            <input id="driver" placeholder="Ví dụ: 84335405559" autocomplete="off">
+          </div>
+          <div>
+            <label>token</label>
+            <input id="token" placeholder="Ví dụ: 2003" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-ghost" id="btnCheck">Kiểm tra lượt</button>
+          <button class="btn btn-primary" id="btnSpin2" disabled>Quay ngay</button>
+        </div>
+
+        <div class="status" id="status">
+          Trạng thái: chưa kiểm tra.
+        </div>
+
+        <div class="tiny" style="margin-top:10px">
+          * Nếu quay bị lỗi, vui lòng kiểm tra đúng driver_id / token hoặc thử lại sau vài giây.
+        </div>
+      </div>
+
+      <!-- Right: wheel -->
+      <div class="card wheelWrap">
+        <div class="wheelStage">
+          <div class="wheelOuter"></div>
+          <div class="pointer"></div>
+
+          <div class="wheel" id="wheel">
+            <canvas id="wheelCanvas" width="900" height="900"></canvas>
+          </div>
+
+          <div class="hub">
+            <button id="btnSpin" disabled>QUAY</button>
+          </div>
+        </div>
+
+        <div class="result">
+          <div class="pill">
+            <span class="tag">Kết quả</span>
+            <span id="resultText">—</span>
+          </div>
+        </div>
+
+        <div class="note" id="noteText">
+          Hãy kiểm tra lượt trước khi quay.
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <div id="msg" style="font-weight:700;margin-bottom:8px"></div>
-    <pre id="out"></pre>
-  </div>
-
 <script>
+  // ✅ Dán URL /exec của Apps Script tại đây
   const API = "https://script.google.com/macros/s/AKfycbxtvfFvlp-tszkCG7DQUpmOHXAfmeK3JaUddh7dbsoKFZImelCB4XCT39k46Lskophu/exec";
 
+  // ===== JSONP helper (để GitHub Pages không dính CORS)
   function jsonp(url) {
     return new Promise((resolve, reject) => {
       const cb = "cb_" + Math.random().toString(36).slice(2);
       window[cb] = (data) => { cleanup(); resolve(data); };
       const s = document.createElement("script");
-      const cleanup = () => { try{delete window[cb]}catch(e){} s.remove(); };
+      const cleanup = () => { try{ delete window[cb]; } catch(e){} s.remove(); };
       s.onerror = () => { cleanup(); reject(new Error("JSONP error")); };
       s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
       document.body.appendChild(s);
     });
   }
 
-  async function api(action, driver_id, token) {
+  async function api(action, driver_id, token){
     const url = `${API}?action=${action}&driver_id=${encodeURIComponent(driver_id)}&token=${encodeURIComponent(token)}`;
     return await jsonp(url);
   }
 
+  // ===== UI refs
   const driverEl = document.getElementById("driver");
   const tokenEl  = document.getElementById("token");
-  const out = document.getElementById("out");
-  const msg = document.getElementById("msg");
-  const btnSpin = document.getElementById("btnSpin");
+  const statusEl = document.getElementById("status");
+  const noteEl   = document.getElementById("noteText");
+  const resultEl = document.getElementById("resultText");
+  const daysText = document.getElementById("daysText");
 
-  function setText(m, o){ msg.textContent = m || ""; out.textContent = o || ""; }
+  const btnCheck = document.getElementById("btnCheck");
+  const btnSpin  = document.getElementById("btnSpin");
+  const btnSpin2 = document.getElementById("btnSpin2");
+  const wheelEl  = document.getElementById("wheel");
 
-  document.getElementById("btnCheck").onclick = async () => {
-    setText("Đang kiểm tra...", "");
-    try {
-      const res = await api("check", driverEl.value.trim(), tokenEl.value.trim());
-      if (!res.ok) return setText("❌ " + res.error, JSON.stringify(res, null, 2));
-      setText(`✅ Còn ${res.driver.spins_remaining} lượt (được ${res.driver.spins_earned} / đã dùng ${res.driver.spins_used})`,
-              JSON.stringify(res, null, 2));
-      btnSpin.disabled = !(res.driver.spins_remaining > 0);
-    } catch (e) {
-      setText("❌ Lỗi gọi API", String(e));
+  // ===== Persist input
+  const LS_KEY = "gpk_lucky_spin_v1";
+  try{
+    const saved = JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+    if(saved.driver_id) driverEl.value = saved.driver_id;
+    if(saved.token) tokenEl.value = saved.token;
+  }catch(e){}
+
+  function saveCreds(){
+    try{
+      localStorage.setItem(LS_KEY, JSON.stringify({
+        driver_id: driverEl.value.trim(),
+        token: tokenEl.value.trim()
+      }));
+    }catch(e){}
+  }
+
+  function setStatus(text, ok=true){
+    statusEl.innerHTML = ok ? `✅ ${text}` : `❌ ${text}`;
+  }
+
+  function setNote(text){ noteEl.textContent = text; }
+
+  function enableSpin(enabled){
+    btnSpin.disabled = !enabled;
+    btnSpin2.disabled = !enabled;
+  }
+
+  // ===== Wheel segments (8 miếng theo tỷ lệ gần đúng ticket ban đầu)
+  // 1 x 300k, 2 x 100k, 5 x 30k  => tổng 8
+  const SEGMENTS = [
+    { label: "300.000đ", key: "300000" },
+    { label: "100.000đ", key: "100000" },
+    { label: "30.000đ",  key: "30000"  },
+  ];
+  // Expand 8 slices:
+  const SLICE_KEYS = [
+    "300000",
+    "100000","100000",
+    "30000","30000","30000","30000","30000"
+  ];
+
+  // Colors (brand-ish)
+  const PALETTE = [
+    "rgba(20,184,122,.95)",
+    "rgba(14,165,164,.92)",
+    "rgba(255,138,0,.88)",
+    "rgba(20,184,122,.82)",
+    "rgba(14,165,164,.80)",
+    "rgba(255,138,0,.78)",
+    "rgba(20,184,122,.74)",
+    "rgba(14,165,164,.72)",
+  ];
+
+  const canvas = document.getElementById("wheelCanvas");
+  const ctx = canvas.getContext("2d");
+
+  function findLabelByKey(key){
+    const x = SEGMENTS.find(s => s.key === key);
+    return x ? x.label : key;
+  }
+
+  function normalizePrizeName(s){
+    // lấy chữ số thôi: "300.000" -> "300000"
+    return String(s || "").replace(/[^\d]/g,"");
+  }
+
+  function drawWheel(){
+    const W = canvas.width, H = canvas.height;
+    const cx = W/2, cy = H/2;
+    const r = Math.min(W,H) * 0.48;
+
+    ctx.clearRect(0,0,W,H);
+
+    const n = SLICE_KEYS.length;
+    const arc = (Math.PI * 2) / n;
+    // startAngle để center slice 0 nằm đúng hướng "kim" ở trên
+    const start = (-Math.PI/2) - (arc/2);
+
+    // outer ring
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r*1.02, 0, Math.PI*2);
+    ctx.fillStyle = "rgba(255,255,255,.95)";
+    ctx.fill();
+    ctx.restore();
+
+    for(let i=0;i<n;i++){
+      const a0 = start + i*arc;
+      const a1 = a0 + arc;
+
+      // slice
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.arc(cx,cy,r,a0,a1);
+      ctx.closePath();
+      ctx.fillStyle = PALETTE[i % PALETTE.length];
+      ctx.fill();
+
+      // divider line
+      ctx.strokeStyle = "rgba(255,255,255,.85)";
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      // text
+      const key = SLICE_KEYS[i];
+      const label = findLabelByKey(key);
+
+      ctx.save();
+      ctx.translate(cx,cy);
+      ctx.rotate(a0 + arc/2);
+      ctx.textAlign = "right";
+      ctx.fillStyle = "rgba(11,31,26,.95)";
+      ctx.font = "900 44px ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial";
+      // make orange text for big prize
+      if(key === "300000") ctx.fillStyle = "rgba(255,255,255,.98)";
+      if(key === "300000") ctx.shadowColor = "rgba(0,0,0,.12)", ctx.shadowBlur = 10;
+
+      ctx.fillText(label, r*0.82, 14);
+      ctx.restore();
     }
-  };
 
-  document.getElementById("btnSpin").onclick = async () => {
-    setText("Đang quay...", "");
-    btnSpin.disabled = true;
-    try {
-      const res = await api("spin", driverEl.value.trim(), tokenEl.value.trim());
-      if (!res.ok) {
-        setText("❌ " + res.error, JSON.stringify(res, null, 2));
-        btnSpin.disabled = false;
+    // inner circle
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.24,0,Math.PI*2);
+    ctx.fillStyle = "rgba(255,255,255,.92)";
+    ctx.fill();
+
+    // inner ring
+    ctx.beginPath();
+    ctx.arc(cx,cy,r*0.30,0,Math.PI*2);
+    ctx.strokeStyle = "rgba(20,184,122,.35)";
+    ctx.lineWidth = 18;
+    ctx.stroke();
+  }
+
+  drawWheel();
+
+  // ===== Spin animation to a given key
+  let currentRotation = 0;
+
+  function pickSliceIndexForKey(key){
+    const k = String(key);
+    const candidates = [];
+    for(let i=0;i<SLICE_KEYS.length;i++){
+      if(SLICE_KEYS[i] === k) candidates.push(i);
+    }
+    if(!candidates.length) return 0;
+    return candidates[Math.floor(Math.random()*candidates.length)];
+  }
+
+  function spinToKey(key){
+    const n = SLICE_KEYS.length;
+    const arcDeg = 360 / n;
+    const idx = pickSliceIndexForKey(key);
+
+    // target rotation: 360*k - idx*arc + offset(within slice)
+    const spins = 7; // số vòng quay (tăng/giảm tùy ý)
+    const offset = (Math.random() - 0.5) * arcDeg * 0.7; // nằm trong miếng
+    const target = (360 * spins) - (idx * arcDeg) + offset;
+
+    currentRotation += target;
+    wheelEl.style.transform = `rotate(${currentRotation}deg)`;
+  }
+
+  // ===== Handlers
+  async function doCheck(){
+    const driver_id = driverEl.value.trim();
+    const token = tokenEl.value.trim();
+    if(!driver_id || !token){
+      setStatus("Vui lòng nhập driver_id và token.", false);
+      enableSpin(false);
+      return;
+    }
+    saveCreds();
+    setStatus("Đang kiểm tra lượt...");
+    setNote("Đang kết nối hệ thống…");
+    enableSpin(false);
+
+    try{
+      const res = await api("check", driver_id, token);
+      if(!res.ok){
+        setStatus(res.error || "Không kiểm tra được.", false);
+        setNote("Hãy kiểm tra đúng driver_id / token.");
         return;
       }
-      setText(`🎉 Bạn trúng: ${res.prize.prize_name}`, JSON.stringify(res, null, 2));
-      btnSpin.disabled = !(res.driver.spins_remaining_after > 0);
-    } catch (e) {
-      setText("❌ Lỗi gọi API", String(e));
-      btnSpin.disabled = false;
+      daysText.textContent = res.required_days || "N";
+      const remain = res.driver?.spins_remaining ?? 0;
+      const earned = res.driver?.spins_earned ?? 0;
+      const used = res.driver?.spins_used ?? 0;
+
+      setStatus(`Còn ${remain} lượt (được ${earned} / đã dùng ${used}).`);
+      setNote(remain > 0 ? "Bấm QUAY để nhận thưởng 🎉" : "Bạn chưa có lượt quay hoặc đã dùng hết lượt.");
+      enableSpin(remain > 0);
+    }catch(e){
+      setStatus("Lỗi gọi API. Kiểm tra URL /exec hoặc quyền deploy.", false);
+      setNote(String(e));
     }
-  };
+  }
+
+  async function doSpin(){
+    const driver_id = driverEl.value.trim();
+    const token = tokenEl.value.trim();
+    if(!driver_id || !token){
+      setStatus("Vui lòng nhập driver_id và token.", false);
+      return;
+    }
+    saveCreds();
+
+    enableSpin(false);
+    btnCheck.disabled = true;
+    resultEl.textContent = "Đang quay…";
+    setNote("Đang lấy kết quả từ hệ thống…");
+
+    try{
+      const res = await api("spin", driver_id, token);
+      if(!res.ok){
+        resultEl.textContent = "—";
+        setStatus(res.error || "Quay thất bại.", false);
+        setNote("Bạn có thể bấm Kiểm tra lượt rồi thử lại.");
+        btnCheck.disabled = false;
+        return;
+      }
+
+      // xác định key từ prize_name (vd: "300.000" -> "300000")
+      const key = normalizePrizeName(res.prize?.prize_name);
+      spinToKey(key || "30000");
+
+      const label = res.prize?.prize_name || "—";
+      setTimeout(() => {
+        resultEl.textContent = label;
+        const remainAfter = res.driver?.spins_remaining_after ?? 0;
+        setStatus(`Bạn trúng: ${label}. Còn ${remainAfter} lượt.`);
+        setNote(remainAfter > 0 ? "Bạn còn lượt, có thể quay tiếp." : "Bạn đã dùng hết lượt. Xin cảm ơn!");
+        enableSpin(remainAfter > 0);
+        btnCheck.disabled = false;
+      }, 5600);
+
+    }catch(e){
+      resultEl.textContent = "—";
+      setStatus("Lỗi gọi API.", false);
+      setNote(String(e));
+      btnCheck.disabled = false;
+    }
+  }
+
+  btnCheck.addEventListener("click", doCheck);
+  btnSpin.addEventListener("click", doSpin);
+  btnSpin2.addEventListener("click", doSpin);
+
+  // Auto check if đã lưu thông tin
+  if(driverEl.value.trim() && tokenEl.value.trim()){
+    doCheck();
+  }
 </script>
 </body>
 </html>
